@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "github.com/Errera11/user";
+
+
+service UserService {
+  rpc GetUserById(GetUserByIdRequset) returns (GetUserByIdResponse) {}
+  rpc GetAllUsers(Pagination) returns (GetAllUsersResponse) {}
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+}
+
+message Pagination {
+  int32 take = 1;
+  int32 skip = 2;
+}
+
+message User {
+  int32 Id = 1;
+  string Username = 2;
+  string Password = 3;
+  string Email = 4;
+  string Image = 5;
+  string CreatedAt = 6;
+}
+
+message GetUserByIdRequset {
+  int32 UserId = 1;
+}
+
+message GetUserByIdResponse {
+  int32 Id = 1;
+  string Username = 2;
+  string CreatedAt = 3;
+  string Email = 4;
+  string Image = 5;
+}
+
+message CreateUserRequest {
+  string Username = 1;
+  string Password = 2;
+  string Email = 3;
+  optional string Image = 4;
+}
+
+message CreateUserResponse {
+    int32 UserId = 1;
+}
+
+message GetAllUsersResponse {
+  repeated GetUserByIdResponse users = 1;
+}
+//
+//message Order {
+//  int32 OrderID = 1;
+//  int32 CustomerID = 2;
+//  int32 ProductID = 3;
+//  int32 Quantity = 4;
+//}
+//
+//message CreateOrderRequest {
+//  int32 customerID = 1;
+//  int32 productID = 2;
+//  int32 quantity = 3;
+//}
+//
+//message CreateOrderResponse {
+//  string status = 1;
+//}
+//
+//message GetOrdersRequest {
+//  int32 customerID = 1;
+//}
+//
+//message GetOrderResponse {
+//  repeated Order orders = 1;
+//}
