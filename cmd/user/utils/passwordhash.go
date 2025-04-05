@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"crypto/rand"
@@ -7,21 +7,6 @@ import (
 	"fmt"
 	"strings"
 )
-
-func main() {
-	mess := "mypass"
-	salt := GenRandomSalt()
-	hashedPswd := HashPassword(mess, salt)
-	fmt.Println("hashedPswd", hashedPswd)
-
-	falsePass := "wrongpass"
-	isTrue := ComparePassword(falsePass, hashedPswd)
-	fmt.Println("Should be wrong", isTrue)
-
-	truePass := "mypass"
-	isTrue2 := ComparePassword(truePass, hashedPswd)
-	fmt.Println("Should be true", isTrue2)
-}
 
 func HashPassword(password string, salt []byte) string {
 	passwordBytes := []byte(password)

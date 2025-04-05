@@ -5,6 +5,7 @@ import (
 	"fmt"
 	userProto "github.com/Errera11/user/internal/protogen"
 	"github.com/Errera11/user/internal/user/repository"
+	"github.com/Errera11/user/utils"
 )
 
 type UserService struct {
@@ -28,7 +29,16 @@ func (s *UserService) GetUserById(ctx context.Context, id int32) *userProto.GetU
 }
 
 func (s *UserService) CreateUser(ctx context.Context, user *userProto.CreateUserRequest) *userProto.CreateUserResponse {
-	userId, err := s.userRepo.CreateUser(ctx, user)
+	passwordSalt := utils.GenRandomSalt()
+	hashedUserPassword := utils.HashPassword(user.Password, passwordSalt)
+
+	userPayload := &userProto.CreateUserRequest{
+		Password: hashedUserPassword,
+		Username: user.Username,
+		Email:    user.Email,
+		Image:    user.Image,
+	}
+	userId, err := s.userRepo.CreateUser(ctx, userPayload)
 
 	if err != nil {
 		fmt.Println(`Cant create user `, user.Email, err)
