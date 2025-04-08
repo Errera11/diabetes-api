@@ -12,20 +12,13 @@ import (
 func main() {
 	err := godotenv.Load()
 
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-
 	if err != nil {
 		fmt.Errorf("Error loading .env file")
 	}
-	//conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-	//if err != nil {
-	//	fmt.Errorf("Unable to connect to database: %v\n", err)
-	//}
 
-	server := NewGRPCServer(":3212", conn)
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	fmt.Println(os.Getenv("SERVICE_URL"))
+	server := NewGRPCServer(os.Getenv("SERVICE_URL"), conn)
 
 	server.Run()
-
-	//userRepo := user.NewUserRepo(conn)
-
 }

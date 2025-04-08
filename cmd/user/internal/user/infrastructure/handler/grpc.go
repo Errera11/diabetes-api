@@ -5,7 +5,7 @@ import (
 	"fmt"
 	userProto "github.com/Errera11/user/internal/protogen"
 	"github.com/Errera11/user/internal/user/service"
-	validator "github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10"
 
 	"google.golang.org/grpc"
 )

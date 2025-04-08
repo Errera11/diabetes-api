@@ -1,9 +1,9 @@
 gen:
 	@protoc \
-		--proto_path=internal/protobuf \
+		--proto_path=../../protobuf \
 		--go_opt=paths=source_relative --go_out=internal/protogen \
 		--go-grpc_opt=paths=source_relative --go-grpc_out=internal/protogen \
-		internal/protobuf/user.proto
+		../../protobuf/user.proto
 
 
 
