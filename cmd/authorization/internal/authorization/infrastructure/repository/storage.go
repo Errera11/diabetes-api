@@ -21,7 +21,7 @@ func NewAuthorizationRepo(conn *redis.Client) repository.AuthorizationRepo {
 	}
 }
 
-func (a AuthorizationRepo) CreateSession(ctx context.Context, sessionId string, userId string) (string, error) {
+func (a AuthorizationRepo) CreateSession(ctx context.Context, sessionId string, userId int32) (string, error) {
 	err := a.conn.Set(ctx, sessionId, userId, sessionExp).Err()
 	if err != nil {
 		return "", fmt.Errorf("Unable to set key: %v", sessionId)

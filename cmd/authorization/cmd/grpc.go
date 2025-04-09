@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Errera11/authorization/internal/authorization/infrastructure/handler"
 	"github.com/Errera11/authorization/internal/authorization/service"
+	userProto "github.com/Errera11/authorization/internal/protogen/user"
 	"github.com/redis/go-redis/v9"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -16,11 +17,12 @@ import (
 type GRPCServer struct {
 	addr        string
 	storageConn *redis.Client
+	userService userProto.UserServiceClient
 }
 
-func NewGRPCServer(addr string, storageConn *redis.Client) *GRPCServer {
+func NewGRPCServer(addr string, storageConn *redis.Client, userService userProto.UserServiceClient) *GRPCServer {
 	fmt.Println("Creating new gRPCServer")
-	return &GRPCServer{addr: addr, storageConn: storageConn}
+	return &GRPCServer{addr: addr, storageConn: storageConn, userService: userService}
 }
 
 func (s *GRPCServer) Run() error {
@@ -33,7 +35,7 @@ func (s *GRPCServer) Run() error {
 	reflection.Register(grpcServer)
 
 	authorizationRepo := repository.NewAuthorizationRepo(s.storageConn)
-	authorizationService := service.New(authorizationRepo)
+	authorizationService := service.New(authorizationRepo, s.userService)
 	handler.NewGrpcAuthorizationService(grpcServer, *authorizationService)
 
 	log.Println("Starting gRPC server on", s.addr)

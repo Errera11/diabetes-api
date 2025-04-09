@@ -32,7 +32,12 @@ func (s *GRPCServer) Run() error {
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
 
-	userRepo := infrastructure.NewUserRepo(s.dbConn)
+	userRepo, err := infrastructure.NewUserRepo(s.dbConn)
+
+	if err != nil {
+		return err
+	}
+
 	userService := service.NewUserService(userRepo)
 	handler.NewGrpcUserService(grpcServer, *userService)
 

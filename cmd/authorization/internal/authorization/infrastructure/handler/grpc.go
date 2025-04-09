@@ -2,9 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"github.com/Errera11/authorization/internal/authorization/service"
-	"github.com/Errera11/authorization/internal/protogen/authorization"
-	"github.com/Errera11/authorization/internal/protogen/user"
+	authorization "github.com/Errera11/authorization/internal/protogen/authorization"
 	"github.com/go-playground/validator/v10"
 	"google.golang.org/grpc"
 )
@@ -17,18 +17,25 @@ type AuthorizationGrpcHandler struct {
 
 func (a AuthorizationGrpcHandler) Signin(ctx context.Context, request *authorization.SigninRequest) (*authorization.SigninResponse, error) {
 	parsedReq := &SigninValidator{
-		email:    request.Email,
-		password: request.Password,
+		Email:    request.Email,
+		Password: request.Password,
 	}
+
 	err := a.validator.Struct(parsedReq)
+
 	if err != nil {
 		return nil, err
 	}
 
-	return a.authorizationService.Signin(ctx, request)
+	creds, err := a.authorizationService.SignIn(ctx, request)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return creds, err
 }
 
-func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *user.CreateUserRequest) (*authorization.SignupResponse, error) {
+func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *authorization.SignupRequest) (*authorization.SignupResponse, error) {
 	parsedReq := &SignupValidator{
 		Email:    request.Email,
 		Password: request.Password,
@@ -39,7 +46,7 @@ func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *user.Crea
 		return nil, err
 	}
 
-	return a.authorizationService.Signup(ctx, request)
+	return a.authorizationService.SignUp(ctx, request)
 }
 
 func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authorization.LogoutRequest) (*authorization.LogoutResponse, error) {
@@ -51,7 +58,7 @@ func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authoriza
 		return nil, err
 	}
 
-	return a.Logout(ctx, request)
+	return a.authorizationService.Logout(ctx, request)
 }
 
 func NewGrpcAuthorizationService(grpc *grpc.Server, authorizationService service.AuthorizationService) {

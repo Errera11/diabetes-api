@@ -12,10 +12,13 @@ type UserRepo struct {
 	conn *pgx.Conn
 }
 
-func NewUserRepo(conn *pgx.Conn) repository.UserRepo {
-	createUsersTable(conn)
+func NewUserRepo(conn *pgx.Conn) (repository.UserRepo, error) {
+	err := createUsersTable(conn)
+	if err != nil {
+		return nil, fmt.Errorf("Faild to create users table: %w", err)
+	}
 
-	return &UserRepo{conn: conn}
+	return &UserRepo{conn: conn}, nil
 }
 
 func (r *UserRepo) CreateUser(ctx context.Context, user *userProto.CreateUserRequest) (int32, error) {
@@ -33,12 +36,12 @@ func (r *UserRepo) CreateUser(ctx context.Context, user *userProto.CreateUserReq
 }
 
 func (r *UserRepo) GetUserById(ctx context.Context, id int32) (*userProto.GetUserByIdResponse, error) {
-	query := `SELECT id, username, email, created_at, image
+	query := `SELECT id, username, email, created_at:text, COALESCE(image, 'null'), password
 			  FROM users WHERE id = $1`
 
 	var user userProto.GetUserByIdResponse
 	err := r.conn.QueryRow(ctx, query, id).Scan(&user.Id, &user.Username, &user.Email,
-		&user.CreatedAt, &user.Image)
+		&user.CreatedAt, &user.Image, &user.Password)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return nil, fmt.Errorf("user with id %d not found", id)
@@ -49,12 +52,12 @@ func (r *UserRepo) GetUserById(ctx context.Context, id int32) (*userProto.GetUse
 }
 
 func (r *UserRepo) GetUserByEmail(ctx context.Context, email string) (*userProto.GetUserByIdResponse, error) {
-	query := `SELECT id, username, email, created_at 
+	query := `SELECT id, username, email, created_at::text, COALESCE(image, 'null'), password
 			  FROM users WHERE email = $1`
 
 	var user userProto.GetUserByIdResponse
 	err := r.conn.QueryRow(ctx, query, email).Scan(&user.Id, &user.Username, &user.Email,
-		&user.CreatedAt)
+		&user.CreatedAt, &user.Image, &user.Password)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return nil, fmt.Errorf("user with email %s not found", email)
@@ -119,8 +122,8 @@ func createUsersTable(conn *pgx.Conn) error {
 	createTableQuery := `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
-		username VARCHAR(255) NOT NULL,
-		email VARCHAR(255) NOT NULL UNIQUE,
+		username TEXT NOT NULL,
+		email TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
 	    image TEXT,
 		created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

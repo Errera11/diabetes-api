@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package diabetesproto;
+option go_package = "github.com/Errera11/diabetesproto";
+
+service AuthService {
+  rpc Signin(SigninRequest) returns (SigninResponse) {}
+  rpc Signup(SignupRequest) returns (SignupResponse) {}
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+}
+
+message SignupRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  optional string image = 4;
+}
+
+message SigninRequest {
+  string Email = 1;
+  string Password = 2;
+}
+message SigninResponse {
+  string Token = 1;
+}
+
+message SignupResponse {
+  int32 UserId = 1;
+  string Token = 2;
+}
+
+message LogoutRequest {
+  string Token = 1;
+}
+
+message LogoutResponse {
+  string Message = 1;
+}

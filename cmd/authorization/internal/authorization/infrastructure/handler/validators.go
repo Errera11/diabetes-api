@@ -1,8 +1,8 @@
 package handler
 
 type SigninValidator struct {
-	email    string `validate:"required,email"`
-	password string `validate:"required,gte=8"`
+	Email    string `validate:"required,email"`
+	Password string `validate:"required,gte=8"`
 }
 
 type SignupValidator struct {

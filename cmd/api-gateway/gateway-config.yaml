@@ -1,0 +1,21 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: diabetesproto.AuthService.Signin
+      post: "/v1/auth/signin"
+      body: "*"
+    - selector: diabetesproto.AuthService.Signup
+      post: "/v1/auth/signup"
+      body: "*"
+    - selector: diabetesproto.AuthService.Logout
+      post: "/v1/auth/logout"
+      body: "*"
+
+    - selector: diabetesproto.UserService.GetUserByEmail
+      post: "/v1/user/{Email}"
+      body: "*"
+    - selector: diabetesproto.UserService.GetAllUsers
+      post: "/v1/user"
+      body: "*"

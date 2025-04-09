@@ -17,7 +17,11 @@ func main() {
 	}
 
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-	fmt.Println(os.Getenv("SERVICE_URL"))
+
+	if err != nil {
+		fmt.Errorf("Error connecting to database: %v", err)
+	}
+
 	server := NewGRPCServer(os.Getenv("SERVICE_URL"), conn)
 
 	server.Run()

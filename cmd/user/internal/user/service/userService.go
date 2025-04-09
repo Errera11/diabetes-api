@@ -16,6 +16,18 @@ func NewUserService(userRepo repository.UserRepo) *UserService {
 	return &UserService{userRepo: userRepo}
 }
 
+func (s *UserService) GetUserByEmail(ctx context.Context, email string) *userProto.GetUserByIdResponse {
+	fmt.Println("Getting user by id...")
+
+	userRecord, err := s.userRepo.GetUserByEmail(ctx, email)
+
+	if err != nil {
+		fmt.Printf(`Error: error getting user by email %v %e`, email, err)
+	}
+
+	return userRecord
+}
+
 func (s *UserService) GetUserById(ctx context.Context, id int32) *userProto.GetUserByIdResponse {
 	fmt.Println("Getting user by id...")
 

@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: user.proto
 
-package user
+package diabetesproto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -23,8 +23,8 @@ const (
 
 type Pagination struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Take          int32                  `protobuf:"varint,1,opt,name=take,proto3" json:"take,omitempty"`
-	Skip          int32                  `protobuf:"varint,2,opt,name=skip,proto3" json:"skip,omitempty"`
+	Take          int32                  `protobuf:"varint,1,opt,name=Take,proto3" json:"Take,omitempty"`
+	Skip          int32                  `protobuf:"varint,2,opt,name=Skip,proto3" json:"Skip,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -249,9 +249,10 @@ type GetUserByIdResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=Username,proto3" json:"Username,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,3,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
-	Image         string                 `protobuf:"bytes,5,opt,name=Image,proto3" json:"Image,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=Password,proto3" json:"Password,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,4,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	Email         string                 `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email,omitempty"`
+	Image         string                 `protobuf:"bytes,6,opt,name=Image,proto3" json:"Image,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -296,6 +297,13 @@ func (x *GetUserByIdResponse) GetId() int32 {
 func (x *GetUserByIdResponse) GetUsername() string {
 	if x != nil {
 		return x.Username
+	}
+	return ""
+}
+
+func (x *GetUserByIdResponse) GetPassword() string {
+	if x != nil {
+		return x.Password
 	}
 	return ""
 }
@@ -482,11 +490,11 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\"4\n" +
+	"user.proto\x12\rdiabetesproto\"4\n" +
 	"\n" +
 	"Pagination\x12\x12\n" +
-	"\x04take\x18\x01 \x01(\x05R\x04take\x12\x12\n" +
-	"\x04skip\x18\x02 \x01(\x05R\x04skip\"\x98\x01\n" +
+	"\x04Take\x18\x01 \x01(\x05R\x04Take\x12\x12\n" +
+	"\x04Skip\x18\x02 \x01(\x05R\x04Skip\"\x98\x01\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
 	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x1a\n" +
@@ -497,13 +505,14 @@ const file_user_proto_rawDesc = "" +
 	"\x12GetUserByIdRequset\x12\x16\n" +
 	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\"-\n" +
 	"\x15GetUserByEmailRequest\x12\x14\n" +
-	"\x05Email\x18\x01 \x01(\tR\x05Email\"\x8b\x01\n" +
+	"\x05Email\x18\x01 \x01(\tR\x05Email\"\xa7\x01\n" +
 	"\x13GetUserByIdResponse\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
-	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x1c\n" +
-	"\tCreatedAt\x18\x03 \x01(\tR\tCreatedAt\x12\x14\n" +
-	"\x05Email\x18\x04 \x01(\tR\x05Email\x12\x14\n" +
-	"\x05Image\x18\x05 \x01(\tR\x05Image\"\x86\x01\n" +
+	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x1a\n" +
+	"\bPassword\x18\x03 \x01(\tR\bPassword\x12\x1c\n" +
+	"\tCreatedAt\x18\x04 \x01(\tR\tCreatedAt\x12\x14\n" +
+	"\x05Email\x18\x05 \x01(\tR\x05Email\x12\x14\n" +
+	"\x05Image\x18\x06 \x01(\tR\x05Image\"\x86\x01\n" +
 	"\x11CreateUserRequest\x12\x1a\n" +
 	"\bUsername\x18\x01 \x01(\tR\bUsername\x12\x1a\n" +
 	"\bPassword\x18\x02 \x01(\tR\bPassword\x12\x14\n" +
@@ -511,15 +520,15 @@ const file_user_proto_rawDesc = "" +
 	"\x05Image\x18\x04 \x01(\tH\x00R\x05Image\x88\x01\x01B\b\n" +
 	"\x06_Image\",\n" +
 	"\x12CreateUserResponse\x12\x16\n" +
-	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\"A\n" +
-	"\x13GetAllUsersResponse\x12*\n" +
-	"\x05users\x18\x01 \x03(\v2\x14.GetUserByIdResponseR\x05users2\xf8\x01\n" +
-	"\vUserService\x12:\n" +
-	"\vGetUserById\x12\x13.GetUserByIdRequset\x1a\x14.GetUserByIdResponse\"\x00\x12@\n" +
-	"\x0eGetUserByEmail\x12\x16.GetUserByEmailRequest\x1a\x14.GetUserByIdResponse\"\x00\x122\n" +
-	"\vGetAllUsers\x12\v.Pagination\x1a\x14.GetAllUsersResponse\"\x00\x127\n" +
+	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\"O\n" +
+	"\x13GetAllUsersResponse\x128\n" +
+	"\x05users\x18\x01 \x03(\v2\".diabetesproto.GetUserByIdResponseR\x05users2\xe8\x02\n" +
+	"\vUserService\x12V\n" +
+	"\vGetUserById\x12!.diabetesproto.GetUserByIdRequset\x1a\".diabetesproto.GetUserByIdResponse\"\x00\x12\\\n" +
+	"\x0eGetUserByEmail\x12$.diabetesproto.GetUserByEmailRequest\x1a\".diabetesproto.GetUserByIdResponse\"\x00\x12N\n" +
+	"\vGetAllUsers\x12\x19.diabetesproto.Pagination\x1a\".diabetesproto.GetAllUsersResponse\"\x00\x12S\n" +
 	"\n" +
-	"CreateUser\x12\x12.CreateUserRequest\x1a\x13.CreateUserResponse\"\x00B\x1aZ\x18github.com/Errera11/userb\x06proto3"
+	"CreateUser\x12 .diabetesproto.CreateUserRequest\x1a!.diabetesproto.CreateUserResponse\"\x00B#Z!github.com/Errera11/diabetesprotob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -535,25 +544,25 @@ func file_user_proto_rawDescGZIP() []byte {
 
 var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_user_proto_goTypes = []any{
-	(*Pagination)(nil),            // 0: Pagination
-	(*User)(nil),                  // 1: User
-	(*GetUserByIdRequset)(nil),    // 2: GetUserByIdRequset
-	(*GetUserByEmailRequest)(nil), // 3: GetUserByEmailRequest
-	(*GetUserByIdResponse)(nil),   // 4: GetUserByIdResponse
-	(*CreateUserRequest)(nil),     // 5: CreateUserRequest
-	(*CreateUserResponse)(nil),    // 6: CreateUserResponse
-	(*GetAllUsersResponse)(nil),   // 7: GetAllUsersResponse
+	(*Pagination)(nil),            // 0: diabetesproto.Pagination
+	(*User)(nil),                  // 1: diabetesproto.User
+	(*GetUserByIdRequset)(nil),    // 2: diabetesproto.GetUserByIdRequset
+	(*GetUserByEmailRequest)(nil), // 3: diabetesproto.GetUserByEmailRequest
+	(*GetUserByIdResponse)(nil),   // 4: diabetesproto.GetUserByIdResponse
+	(*CreateUserRequest)(nil),     // 5: diabetesproto.CreateUserRequest
+	(*CreateUserResponse)(nil),    // 6: diabetesproto.CreateUserResponse
+	(*GetAllUsersResponse)(nil),   // 7: diabetesproto.GetAllUsersResponse
 }
 var file_user_proto_depIdxs = []int32{
-	4, // 0: GetAllUsersResponse.users:type_name -> GetUserByIdResponse
-	2, // 1: UserService.GetUserById:input_type -> GetUserByIdRequset
-	3, // 2: UserService.GetUserByEmail:input_type -> GetUserByEmailRequest
-	0, // 3: UserService.GetAllUsers:input_type -> Pagination
-	5, // 4: UserService.CreateUser:input_type -> CreateUserRequest
-	4, // 5: UserService.GetUserById:output_type -> GetUserByIdResponse
-	4, // 6: UserService.GetUserByEmail:output_type -> GetUserByIdResponse
-	7, // 7: UserService.GetAllUsers:output_type -> GetAllUsersResponse
-	6, // 8: UserService.CreateUser:output_type -> CreateUserResponse
+	4, // 0: diabetesproto.GetAllUsersResponse.users:type_name -> diabetesproto.GetUserByIdResponse
+	2, // 1: diabetesproto.UserService.GetUserById:input_type -> diabetesproto.GetUserByIdRequset
+	3, // 2: diabetesproto.UserService.GetUserByEmail:input_type -> diabetesproto.GetUserByEmailRequest
+	0, // 3: diabetesproto.UserService.GetAllUsers:input_type -> diabetesproto.Pagination
+	5, // 4: diabetesproto.UserService.CreateUser:input_type -> diabetesproto.CreateUserRequest
+	4, // 5: diabetesproto.UserService.GetUserById:output_type -> diabetesproto.GetUserByIdResponse
+	4, // 6: diabetesproto.UserService.GetUserByEmail:output_type -> diabetesproto.GetUserByIdResponse
+	7, // 7: diabetesproto.UserService.GetAllUsers:output_type -> diabetesproto.GetAllUsersResponse
+	6, // 8: diabetesproto.UserService.CreateUser:output_type -> diabetesproto.CreateUserResponse
 	5, // [5:9] is the sub-list for method output_type
 	1, // [1:5] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

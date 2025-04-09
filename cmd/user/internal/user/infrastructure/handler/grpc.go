@@ -17,6 +17,34 @@ type UserGrpcHandler struct {
 
 var validate *validator.Validate
 
+func (h *UserGrpcHandler) GetUserByEmail(ctx context.Context, request *userProto.GetUserByEmailRequest) (*userProto.GetUserByIdResponse, error) {
+	validate = validator.New(validator.WithRequiredStructEnabled())
+
+	incomingData := &GetUserByEmailValidator{Email: request.Email}
+	err := validate.Struct(incomingData)
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	userRecord := h.userService.GetUserByEmail(ctx, request.Email)
+
+	if userRecord == nil {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	res := userProto.GetUserByIdResponse{
+		Id:        userRecord.Id,
+		Username:  userRecord.Username,
+		CreatedAt: userRecord.CreatedAt,
+		Email:     userRecord.Email,
+		Image:     userRecord.Image,
+	}
+
+	return &res, nil
+}
+
 func (h *UserGrpcHandler) GetUserById(ctx context.Context, request *userProto.GetUserByIdRequset) (*userProto.GetUserByIdResponse, error) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
