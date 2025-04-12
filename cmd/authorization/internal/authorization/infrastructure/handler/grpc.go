@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"github.com/Errera11/authorization/internal/authorization/infrastructure/utils"
 	"github.com/Errera11/authorization/internal/authorization/service"
 	authorization "github.com/Errera11/authorization/internal/protogen/authorization"
 	"github.com/go-playground/validator/v10"
@@ -27,12 +28,14 @@ func (a AuthorizationGrpcHandler) Signin(ctx context.Context, request *authoriza
 		return nil, err
 	}
 
-	creds, err := a.authorizationService.SignIn(ctx, request)
+	cred, err := a.authorizationService.SignIn(ctx, request)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return creds, err
+	utils.SetUserIDInCtx(ctx, cred.Token)
+
+	return cred, err
 }
 
 func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *authorization.SignupRequest) (*authorization.SignupResponse, error) {
@@ -46,7 +49,15 @@ func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *authoriza
 		return nil, err
 	}
 
-	return a.authorizationService.SignUp(ctx, request)
+	cred, err := a.authorizationService.SignUp(ctx, request)
+
+	if err != nil {
+		return nil, err
+	}
+
+	utils.SetUserIDInCtx(ctx, cred.Token)
+
+	return cred, nil
 }
 
 func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authorization.LogoutRequest) (*authorization.LogoutResponse, error) {
@@ -58,7 +69,21 @@ func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authoriza
 		return nil, err
 	}
 
+	utils.SetDeleteSessionFlagInCtx(ctx)
+
 	return a.authorizationService.Logout(ctx, request)
+}
+
+func (a AuthorizationGrpcHandler) Auth(ctx context.Context, request *authorization.AuthRequest) (*authorization.AuthResponse, error) {
+	parsedReq := &LogoutValidator{
+		Token: request.Token,
+	}
+	err := a.validator.Struct(parsedReq)
+	if err != nil {
+		return nil, err
+	}
+
+	return a.authorizationService.CheckAuth(ctx, request)
 }
 
 func NewGrpcAuthorizationService(grpc *grpc.Server, authorizationService service.AuthorizationService) {

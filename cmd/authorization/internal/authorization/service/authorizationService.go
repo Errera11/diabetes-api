@@ -7,6 +7,7 @@ import (
 	authorizationProto "github.com/Errera11/authorization/internal/protogen/authorization"
 	userProto "github.com/Errera11/authorization/internal/protogen/user"
 	"github.com/google/uuid"
+	"strconv"
 )
 
 type AuthorizationService struct {
@@ -37,7 +38,8 @@ func (s *AuthorizationService) SignIn(ctx context.Context, payload *authorizatio
 	token, err := s.authorizationRepo.CreateSession(ctx, sessionId, dbUser.Id)
 
 	return &authorizationProto.SigninResponse{
-		Token: token,
+		UserId: dbUser.Id,
+		Token:  token,
 	}, err
 }
 func (s *AuthorizationService) SignUp(ctx context.Context, payload *authorizationProto.SignupRequest) (*authorizationProto.SignupResponse, error) {
@@ -76,5 +78,33 @@ func (s *AuthorizationService) Logout(ctx context.Context, payload *authorizatio
 
 	return &authorizationProto.LogoutResponse{
 		Message: "Session deleted succesfully",
+	}, nil
+}
+func (s *AuthorizationService) CheckAuth(ctx context.Context, payload *authorizationProto.AuthRequest) (*authorizationProto.AuthResponse, error) {
+	userId, err := s.authorizationRepo.GetSession(ctx, payload.Token)
+
+	if err != nil {
+		return &authorizationProto.AuthResponse{}, err
+	}
+
+	parsedUserId, err := strconv.Atoi(userId)
+	if err != nil {
+		return &authorizationProto.AuthResponse{}, err
+	}
+
+	dbUser, err := s.userService.GetUserById(ctx, &userProto.GetUserByIdRequset{
+		UserId: int32(parsedUserId),
+	})
+
+	if err != nil {
+		return &authorizationProto.AuthResponse{}, fmt.Errorf("Error checking user with id %v: %v", parsedUserId, err)
+	}
+
+	return &authorizationProto.AuthResponse{
+		Id:        dbUser.Id,
+		Email:     dbUser.Email,
+		Username:  dbUser.Username,
+		CreatedAt: dbUser.CreatedAt,
+		Image:     dbUser.Image,
 	}, nil
 }

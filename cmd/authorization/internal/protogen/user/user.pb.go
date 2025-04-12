@@ -249,9 +249,10 @@ type GetUserByIdResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=Username,proto3" json:"Username,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,3,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
-	Image         string                 `protobuf:"bytes,5,opt,name=Image,proto3" json:"Image,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=Password,proto3" json:"Password,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,4,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	Email         string                 `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email,omitempty"`
+	Image         string                 `protobuf:"bytes,6,opt,name=Image,proto3" json:"Image,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -296,6 +297,13 @@ func (x *GetUserByIdResponse) GetId() int32 {
 func (x *GetUserByIdResponse) GetUsername() string {
 	if x != nil {
 		return x.Username
+	}
+	return ""
+}
+
+func (x *GetUserByIdResponse) GetPassword() string {
+	if x != nil {
+		return x.Password
 	}
 	return ""
 }
@@ -497,13 +505,14 @@ const file_user_proto_rawDesc = "" +
 	"\x12GetUserByIdRequset\x12\x16\n" +
 	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\"-\n" +
 	"\x15GetUserByEmailRequest\x12\x14\n" +
-	"\x05Email\x18\x01 \x01(\tR\x05Email\"\x8b\x01\n" +
+	"\x05Email\x18\x01 \x01(\tR\x05Email\"\xa7\x01\n" +
 	"\x13GetUserByIdResponse\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
-	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x1c\n" +
-	"\tCreatedAt\x18\x03 \x01(\tR\tCreatedAt\x12\x14\n" +
-	"\x05Email\x18\x04 \x01(\tR\x05Email\x12\x14\n" +
-	"\x05Image\x18\x05 \x01(\tR\x05Image\"\x86\x01\n" +
+	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x1a\n" +
+	"\bPassword\x18\x03 \x01(\tR\bPassword\x12\x1c\n" +
+	"\tCreatedAt\x18\x04 \x01(\tR\tCreatedAt\x12\x14\n" +
+	"\x05Email\x18\x05 \x01(\tR\x05Email\x12\x14\n" +
+	"\x05Image\x18\x06 \x01(\tR\x05Image\"\x86\x01\n" +
 	"\x11CreateUserRequest\x12\x1a\n" +
 	"\bUsername\x18\x01 \x01(\tR\bUsername\x12\x1a\n" +
 	"\bPassword\x18\x02 \x01(\tR\bPassword\x12\x14\n" +

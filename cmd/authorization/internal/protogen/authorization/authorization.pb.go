@@ -143,7 +143,8 @@ func (x *SigninRequest) GetPassword() string {
 
 type SigninResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=Token,proto3" json:"Token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -176,6 +177,13 @@ func (x *SigninResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SigninResponse.ProtoReflect.Descriptor instead.
 func (*SigninResponse) Descriptor() ([]byte, []int) {
 	return file_authorization_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SigninResponse) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
 }
 
 func (x *SigninResponse) GetToken() string {
@@ -325,6 +333,126 @@ func (x *LogoutResponse) GetMessage() string {
 	return ""
 }
 
+type AuthRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthRequest) Reset() {
+	*x = AuthRequest{}
+	mi := &file_authorization_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthRequest) ProtoMessage() {}
+
+func (x *AuthRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_authorization_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthRequest.ProtoReflect.Descriptor instead.
+func (*AuthRequest) Descriptor() ([]byte, []int) {
+	return file_authorization_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AuthRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type AuthResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=Username,proto3" json:"Username,omitempty"`
+	Email         string                 `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Image         string                 `protobuf:"bytes,5,opt,name=Image,proto3" json:"Image,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,6,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthResponse) Reset() {
+	*x = AuthResponse{}
+	mi := &file_authorization_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthResponse) ProtoMessage() {}
+
+func (x *AuthResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_authorization_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthResponse.ProtoReflect.Descriptor instead.
+func (*AuthResponse) Descriptor() ([]byte, []int) {
+	return file_authorization_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AuthResponse) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *AuthResponse) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *AuthResponse) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *AuthResponse) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+func (x *AuthResponse) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
 var File_authorization_proto protoreflect.FileDescriptor
 
 const file_authorization_proto_rawDesc = "" +
@@ -338,20 +466,30 @@ const file_authorization_proto_rawDesc = "" +
 	"\x06_image\"A\n" +
 	"\rSigninRequest\x12\x14\n" +
 	"\x05Email\x18\x01 \x01(\tR\x05Email\x12\x1a\n" +
-	"\bPassword\x18\x02 \x01(\tR\bPassword\"&\n" +
-	"\x0eSigninResponse\x12\x14\n" +
-	"\x05Token\x18\x01 \x01(\tR\x05Token\">\n" +
+	"\bPassword\x18\x02 \x01(\tR\bPassword\">\n" +
+	"\x0eSigninResponse\x12\x16\n" +
+	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\x12\x14\n" +
+	"\x05Token\x18\x02 \x01(\tR\x05Token\">\n" +
 	"\x0eSignupResponse\x12\x16\n" +
 	"\x06UserId\x18\x01 \x01(\x05R\x06UserId\x12\x14\n" +
 	"\x05Token\x18\x02 \x01(\tR\x05Token\"%\n" +
 	"\rLogoutRequest\x12\x14\n" +
 	"\x05Token\x18\x01 \x01(\tR\x05Token\"*\n" +
 	"\x0eLogoutResponse\x12\x18\n" +
-	"\aMessage\x18\x01 \x01(\tR\aMessage2\xe8\x01\n" +
+	"\aMessage\x18\x01 \x01(\tR\aMessage\"#\n" +
+	"\vAuthRequest\x12\x14\n" +
+	"\x05Token\x18\x01 \x01(\tR\x05Token\"\x84\x01\n" +
+	"\fAuthResponse\x12\x0e\n" +
+	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
+	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x14\n" +
+	"\x05Email\x18\x04 \x01(\tR\x05Email\x12\x14\n" +
+	"\x05Image\x18\x05 \x01(\tR\x05Image\x12\x1c\n" +
+	"\tCreatedAt\x18\x06 \x01(\tR\tCreatedAt2\xab\x02\n" +
 	"\vAuthService\x12G\n" +
 	"\x06Signin\x12\x1c.diabetesproto.SigninRequest\x1a\x1d.diabetesproto.SigninResponse\"\x00\x12G\n" +
 	"\x06Signup\x12\x1c.diabetesproto.SignupRequest\x1a\x1d.diabetesproto.SignupResponse\"\x00\x12G\n" +
-	"\x06Logout\x12\x1c.diabetesproto.LogoutRequest\x1a\x1d.diabetesproto.LogoutResponse\"\x00B#Z!github.com/Errera11/diabetesprotob\x06proto3"
+	"\x06Logout\x12\x1c.diabetesproto.LogoutRequest\x1a\x1d.diabetesproto.LogoutResponse\"\x00\x12A\n" +
+	"\x04Auth\x12\x1a.diabetesproto.AuthRequest\x1a\x1b.diabetesproto.AuthResponse\"\x00B#Z!github.com/Errera11/diabetesprotob\x06proto3"
 
 var (
 	file_authorization_proto_rawDescOnce sync.Once
@@ -365,7 +503,7 @@ func file_authorization_proto_rawDescGZIP() []byte {
 	return file_authorization_proto_rawDescData
 }
 
-var file_authorization_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_authorization_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_authorization_proto_goTypes = []any{
 	(*SignupRequest)(nil),  // 0: diabetesproto.SignupRequest
 	(*SigninRequest)(nil),  // 1: diabetesproto.SigninRequest
@@ -373,16 +511,20 @@ var file_authorization_proto_goTypes = []any{
 	(*SignupResponse)(nil), // 3: diabetesproto.SignupResponse
 	(*LogoutRequest)(nil),  // 4: diabetesproto.LogoutRequest
 	(*LogoutResponse)(nil), // 5: diabetesproto.LogoutResponse
+	(*AuthRequest)(nil),    // 6: diabetesproto.AuthRequest
+	(*AuthResponse)(nil),   // 7: diabetesproto.AuthResponse
 }
 var file_authorization_proto_depIdxs = []int32{
 	1, // 0: diabetesproto.AuthService.Signin:input_type -> diabetesproto.SigninRequest
 	0, // 1: diabetesproto.AuthService.Signup:input_type -> diabetesproto.SignupRequest
 	4, // 2: diabetesproto.AuthService.Logout:input_type -> diabetesproto.LogoutRequest
-	2, // 3: diabetesproto.AuthService.Signin:output_type -> diabetesproto.SigninResponse
-	3, // 4: diabetesproto.AuthService.Signup:output_type -> diabetesproto.SignupResponse
-	5, // 5: diabetesproto.AuthService.Logout:output_type -> diabetesproto.LogoutResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	6, // 3: diabetesproto.AuthService.Auth:input_type -> diabetesproto.AuthRequest
+	2, // 4: diabetesproto.AuthService.Signin:output_type -> diabetesproto.SigninResponse
+	3, // 5: diabetesproto.AuthService.Signup:output_type -> diabetesproto.SignupResponse
+	5, // 6: diabetesproto.AuthService.Logout:output_type -> diabetesproto.LogoutResponse
+	7, // 7: diabetesproto.AuthService.Auth:output_type -> diabetesproto.AuthResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -400,7 +542,7 @@ func file_authorization_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_authorization_proto_rawDesc), len(file_authorization_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
