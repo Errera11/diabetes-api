@@ -57,6 +57,9 @@ func (s *AuthorizationService) SignUp(ctx context.Context, payload *authorizatio
 		Username: payload.Username,
 		Image:    payload.Image,
 	})
+	if err != nil {
+		return &authorizationProto.SignupResponse{}, err
+	}
 
 	sessionId := uuid.New().String()
 

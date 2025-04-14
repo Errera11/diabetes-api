@@ -23,7 +23,6 @@ func (a AuthorizationGrpcHandler) Signin(ctx context.Context, request *authoriza
 	}
 
 	err := a.validator.Struct(parsedReq)
-
 	if err != nil {
 		return nil, err
 	}
