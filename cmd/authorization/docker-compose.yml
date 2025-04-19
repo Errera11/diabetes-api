@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  diabetes-mc-redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - microservices_network
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+
+  diabetes-mc-authorization:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diabetes-mc-authorization
+    environment:
+      - SERVICE_URL=${SERVICE_URL}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+      - REDIS_URL=${REDIS_URL}
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    networks:
+      - microservices_network
+    depends_on:
+      - diabetes-mc-redis
+
+networks:
+  microservices_network:
+    external: true
