@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Errera11/user/internal/middleware"
 	"github.com/Errera11/user/internal/user/infrastructure"
 	"github.com/Errera11/user/internal/user/infrastructure/handler"
 	"github.com/Errera11/user/internal/user/service"
@@ -29,7 +30,8 @@ func (s *GRPCServer) Run() error {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(middleware.UnaryServerInterceptor(middleware.MyAuthFunc)))
+
 	reflection.Register(grpcServer)
 
 	userRepo, err := infrastructure.NewUserRepo(s.dbConn)

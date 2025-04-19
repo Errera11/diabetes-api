@@ -7,13 +7,14 @@ service AuthService {
   rpc Signin(SigninRequest) returns (SigninResponse) {}
   rpc Signup(SignupRequest) returns (SignupResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+  rpc Auth(AuthRequest) returns (AuthResponse) {}
 }
 
 message SignupRequest {
-  string username = 1;
-  string password = 2;
-  string email = 3;
-  optional string image = 4;
+  string Username = 1;
+  string Password = 2;
+  string Email = 3;
+  optional string Image = 4;
 }
 
 message SigninRequest {
@@ -21,7 +22,8 @@ message SigninRequest {
   string Password = 2;
 }
 message SigninResponse {
-  string Token = 1;
+  int32 UserId = 1;
+  string Token = 2;
 }
 
 message SignupResponse {
@@ -35,4 +37,16 @@ message LogoutRequest {
 
 message LogoutResponse {
   string Message = 1;
+}
+
+message AuthRequest {
+  string Token = 1;
+}
+
+message AuthResponse {
+  int32 Id = 1;
+  string Username = 2;
+  string Email = 4;
+  string Image = 5;
+  string CreatedAt = 6;
 }

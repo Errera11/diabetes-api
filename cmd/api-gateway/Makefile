@@ -6,11 +6,17 @@ gen:
 	  --go-grpc_opt paths=source_relative \
 	  ../../protobuf/user.proto
 	@protoc -I ../../protobuf \
-    	  --go_out ./internal/protogen \
-    	  --go_opt paths=source_relative \
-    	  --go-grpc_out ./internal/protogen \
-    	  --go-grpc_opt paths=source_relative \
-    	  ../../protobuf/authorization.proto
+      --go_out ./internal/protogen \
+      --go_opt paths=source_relative \
+      --go-grpc_out ./internal/protogen \
+      --go-grpc_opt paths=source_relative \
+      ../../protobuf/authorization.proto
+	@protoc -I ../../protobuf \
+      --go_out ./internal/protogen \
+      --go_opt paths=source_relative \
+      --go-grpc_out ./internal/protogen \
+      --go-grpc_opt paths=source_relative \
+      ../../protobuf/prediction.proto
 
 gen-gateway:
 	@protoc -I ../../protobuf \

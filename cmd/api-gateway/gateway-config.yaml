@@ -10,12 +10,17 @@ http:
       post: "/v1/auth/signup"
       body: "*"
     - selector: diabetesproto.AuthService.Logout
-      post: "/v1/auth/logout"
-      body: "*"
+      delete: "/v1/auth/logout"
 
     - selector: diabetesproto.UserService.GetUserByEmail
-      post: "/v1/user/{Email}"
-      body: "*"
+      get: "/v1/user/{Email}"
     - selector: diabetesproto.UserService.GetAllUsers
-      post: "/v1/user"
+      get: "/v1/user"
+
+    - selector: diabetesproto.PredictionService.SavePrediction
+      post: "/v1/prediction"
       body: "*"
+    - selector: diabetesproto.PredictionService.GetAllPredictionsByUserId
+      get: "/v1/prediction/{UserId}"
+    - selector: diabetesproto.PredictionService.DeletePredictionById
+      delete: "/v1/prediction/{Id}"

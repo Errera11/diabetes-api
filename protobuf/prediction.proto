@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package diabetesproto;
+option go_package = "github.com/Errera11/diabetesproto";
+
+service PredictionService {
+  rpc SavePrediction(SavePredictionRequest) returns (PredictionResponse) {}
+  rpc GetAllPredictionsByUserId(GetAllPredictionsByUserIdRequest) returns (GetAllPredictionsByUserIdResponse) {}
+//  rpc GetAllPredictionsByUserEmail(GetAllPredictionsByUserEmailRequest) returns (GetAllPredictionsByUserIdResponse) {}
+  rpc GetPredictionById(GetPredictionByIdRequest) returns (PredictionResponse) {}
+  rpc DeletePredictionById(DeletePredictionByIdRequest) returns (DeletePredictionByIdResponse) {}
+}
+
+message SavePredictionRequest {
+  int32 CholLevel     = 1;
+  bool DiffWalk  = 2;
+  int32 PhysHealth = 3;
+  string Birthdate = 4;
+  float BloodPressure = 5;
+  float Weight = 6;
+  float Height = 7;
+  bool HeartDisease = 8;
+  int32 GenHealth = 9;
+  bool PhysActivity = 10;
+  repeated float Result        = 11;
+  optional int32 UserId  = 12;
+}
+
+message PredictionResponse {
+  int32 CholLevel     = 1;
+  bool DiffWalk  = 2;
+  int32 PhysHealth = 3;
+  string Birthdate = 4;
+  float BloodPressure = 5;
+  float Weight = 6;
+  float Height = 7;
+  bool HeartDisease = 8;
+  int32 GenHealth = 9;
+  bool PhysActivity = 10;
+  repeated float Result        = 11;
+  int32 UserId  = 12;
+  int32 Id = 13;
+  string CreatedAt = 14;
+}
+
+message GetAllPredictionsByUserIdRequest {
+  int32 UserId = 1;
+}
+
+message GetAllPredictionsByUserIdResponse {
+  repeated PredictionResponse predictions = 1;
+}
+
+message GetAllPredictionsByUserEmailRequest {
+  string Email = 1;
+}
+
+message GetPredictionByIdRequest {
+  int32 Id = 1;
+}
+
+message DeletePredictionByIdRequest {
+  int32 Id = 1;
+}
+
+message DeletePredictionByIdResponse {
+  int32 Id = 1;
+}

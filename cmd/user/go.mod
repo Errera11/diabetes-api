@@ -1,11 +1,11 @@
 module github.com/Errera11/user
 
-go 1.22.0
+go 1.23.0
 
 require (
 	github.com/jackc/pgx/v5 v5.7.4
 	github.com/joho/godotenv v1.5.1
-	google.golang.org/grpc v1.71.0
+	google.golang.org/grpc v1.71.1
 )
 
 require (

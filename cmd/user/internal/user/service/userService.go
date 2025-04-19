@@ -34,7 +34,7 @@ func (s *UserService) GetUserById(ctx context.Context, id int32) *userProto.GetU
 	userRecord, err := s.userRepo.GetUserById(ctx, id)
 
 	if err != nil {
-		fmt.Println(`Error: error getting user by id %v`, id)
+		fmt.Printf(`Error: error getting user by id %v %e`, id, err)
 	}
 
 	return userRecord

@@ -19,7 +19,6 @@ var validate *validator.Validate
 
 func (h *UserGrpcHandler) GetUserByEmail(ctx context.Context, request *userProto.GetUserByEmailRequest) (*userProto.GetUserByIdResponse, error) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
-
 	incomingData := &GetUserByEmailValidator{Email: request.Email}
 	err := validate.Struct(incomingData)
 
@@ -86,19 +85,6 @@ func (h *UserGrpcHandler) CreateUser(ctx context.Context, request *userProto.Cre
 
 func (h *UserGrpcHandler) GetAllUsers(ctx context.Context, request *userProto.Pagination) (*userProto.GetAllUsersResponse, error) {
 	userRecord := h.userService.GetAllUsers(ctx, request)
-
-	//var users []*userProto.GetUserByIdResponse
-	//for _, user := range userRecord.Users {
-	//	serializedUser := userProto.GetUserByIdResponse{
-	//		Id:        user.Id,
-	//		Username:  user.Username,
-	//		CreatedAt: user.CreatedAt,
-	//		Email:     user.Email,
-	//		Image:     user.Image,
-	//	}
-	//
-	//	users = append(users, &serializedUser)
-	//}
 
 	return userRecord, nil
 }

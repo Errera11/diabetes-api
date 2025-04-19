@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  diabetes-prediction-mc-db:
+    image: postgres:15
+    container_name: diabetes-prediction-mc-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGPORT=${POSTGRES_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    networks:
+      - microservices_network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 5s
+
+  diabetes-mc-prediction:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diabetes-mc-prediction
+    environment:
+      - SERVICE_URL=${SERVICE_URL}
+      - AUTH_MICROSERVICE_URL=${AUTH_MICROSERVICE_URL}
+      - DATABASE_URL=${DATABASE_URL}
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    networks:
+      - microservices_network
+    depends_on:
+      diabetes-prediction-mc-db:
+        condition: service_healthy
+
+networks:
+  microservices_network:
+    external: true
+
+volumes:
+  postgres_data:

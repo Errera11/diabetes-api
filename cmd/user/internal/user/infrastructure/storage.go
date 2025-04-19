@@ -36,7 +36,7 @@ func (r *UserRepo) CreateUser(ctx context.Context, user *userProto.CreateUserReq
 }
 
 func (r *UserRepo) GetUserById(ctx context.Context, id int32) (*userProto.GetUserByIdResponse, error) {
-	query := `SELECT id, username, email, created_at:text, COALESCE(image, 'null'), password
+	query := `SELECT id, username, email, created_at::text, COALESCE(image, 'null'), password
 			  FROM users WHERE id = $1`
 
 	var user userProto.GetUserByIdResponse
@@ -48,6 +48,7 @@ func (r *UserRepo) GetUserById(ctx context.Context, id int32) (*userProto.GetUse
 		}
 		return nil, fmt.Errorf("could not retrieve user: %v", err)
 	}
+
 	return &user, nil
 }
 

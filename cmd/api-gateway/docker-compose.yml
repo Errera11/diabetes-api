@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  diabetes-mc-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diabetes-mc-gateway
+    environment:
+      - USER_MICROSERVICE_URL=${USER_MICROSERVICE_URL}
+      - AUTHORIZATION_MICROSERVICE_URL=${AUTHORIZATION_MICROSERVICE_URL}
+      - PREDICTION_MICROSERVICE_URL=${PREDICTION_MICROSERVICE_URL}
+      - GATEWAY_URL=${GATEWAY_URL}
+    ports:
+      - 1111:1111
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    external: true
+
+volumes:
+  postgres_data:
