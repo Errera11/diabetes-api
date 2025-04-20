@@ -5,9 +5,9 @@ import (
 	"encoding/gob"
 	"fmt"
 	"github.com/gorilla/handlers"
-
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"github.com/rs/cors"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 	"log"
@@ -219,11 +219,19 @@ func (s *MyGrpcServer) Run() error {
 	}
 
 	loggingHandler := handlers.CombinedLoggingHandler(os.Stderr, mux)
-
+	handlers.AllowedOrigins([]string{"*"})
 	middleware := gatewayMiddleware{}
 	r.Use(middleware.Middleware)
-
 	r.PathPrefix("/").Handler(loggingHandler)
+
+	withCors := cors.New(cors.Options{
+		AllowOriginFunc:  func(origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"ACCEPT", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	}).Handler(r)
 
 	gatewayAddr := os.Getenv("GATEWAY_URL")
 	srv := &http.Server{
@@ -231,10 +239,10 @@ func (s *MyGrpcServer) Run() error {
 		WriteTimeout: time.Second * 20,
 		ReadTimeout:  time.Second * 20,
 		IdleTimeout:  time.Second * 65,
-		Handler:      r,
+		Handler:      withCors,
 	}
 
-	log.Println("Starting htt[ server on", gatewayAddr)
+	log.Println("Starting api-gateway http server on", gatewayAddr)
 
 	return srv.ListenAndServe()
 }
