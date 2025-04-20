@@ -84,7 +84,7 @@ func (s *AuthorizationService) Logout(ctx context.Context, payload *authorizatio
 	}, nil
 }
 func (s *AuthorizationService) CheckAuth(ctx context.Context, payload *authorizationProto.AuthRequest) (*authorizationProto.AuthResponse, error) {
-	userId, err := s.authorizationRepo.GetSession(ctx, payload.Token)
+	userId, err := s.authorizationRepo.GetSession(ctx, *payload.Token)
 
 	if err != nil {
 		return &authorizationProto.AuthResponse{}, err

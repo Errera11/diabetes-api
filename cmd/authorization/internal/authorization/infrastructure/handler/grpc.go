@@ -8,6 +8,7 @@ import (
 	authorization "github.com/Errera11/authorization/internal/protogen/authorization"
 	"github.com/go-playground/validator/v10"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type AuthorizationGrpcHandler struct {
@@ -74,15 +75,16 @@ func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authoriza
 }
 
 func (a AuthorizationGrpcHandler) Auth(ctx context.Context, request *authorization.AuthRequest) (*authorization.AuthResponse, error) {
-	parsedReq := &LogoutValidator{
-		Token: request.Token,
-	}
-	err := a.validator.Struct(parsedReq)
-	if err != nil {
-		return nil, err
+	md, ok := metadata.FromIncomingContext(ctx)
+	token := md["userId"]
+
+	if !ok || len(token) == 0 {
+		return nil, fmt.Errorf("No token have been passed %e", ok)
 	}
 
-	return a.authorizationService.CheckAuth(ctx, request)
+	return a.authorizationService.CheckAuth(ctx, &authorization.AuthRequest{
+		Token: &token[0],
+	})
 }
 
 func NewGrpcAuthorizationService(grpc *grpc.Server, authorizationService service.AuthorizationService) {
