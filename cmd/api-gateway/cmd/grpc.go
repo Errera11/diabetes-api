@@ -144,7 +144,7 @@ func gatewayResponseModifier(ctx context.Context, response http.ResponseWriter, 
 		session.Options.MaxAge = sessionLength
 		session.Options.Path = "/"
 		session.Options.HttpOnly = true
-		session.Options.SameSite = http.SameSiteLaxMode
+		session.Options.SameSite = http.SameSiteNoneMode
 
 		// create a session for the user.  This session is converted by gorilla
 		// into a session cookie
