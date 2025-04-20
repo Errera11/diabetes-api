@@ -335,7 +335,7 @@ func (x *LogoutResponse) GetMessage() string {
 
 type AuthRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	Token         *string                `protobuf:"bytes,1,opt,name=Token,proto3,oneof" json:"Token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -371,8 +371,8 @@ func (*AuthRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *AuthRequest) GetToken() string {
-	if x != nil {
-		return x.Token
+	if x != nil && x.Token != nil {
+		return *x.Token
 	}
 	return ""
 }
@@ -476,9 +476,10 @@ const file_authorization_proto_rawDesc = "" +
 	"\rLogoutRequest\x12\x14\n" +
 	"\x05Token\x18\x01 \x01(\tR\x05Token\"*\n" +
 	"\x0eLogoutResponse\x12\x18\n" +
-	"\aMessage\x18\x01 \x01(\tR\aMessage\"#\n" +
-	"\vAuthRequest\x12\x14\n" +
-	"\x05Token\x18\x01 \x01(\tR\x05Token\"\x84\x01\n" +
+	"\aMessage\x18\x01 \x01(\tR\aMessage\"2\n" +
+	"\vAuthRequest\x12\x19\n" +
+	"\x05Token\x18\x01 \x01(\tH\x00R\x05Token\x88\x01\x01B\b\n" +
+	"\x06_Token\"\x84\x01\n" +
 	"\fAuthResponse\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
 	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x14\n" +
@@ -536,6 +537,7 @@ func file_authorization_proto_init() {
 		return
 	}
 	file_authorization_proto_msgTypes[0].OneofWrappers = []any{}
+	file_authorization_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

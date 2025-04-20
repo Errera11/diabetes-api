@@ -11,6 +11,8 @@ http:
       body: "*"
     - selector: diabetesproto.AuthService.Logout
       delete: "/v1/auth/logout"
+    - selector: diabetesproto.AuthService.Auth
+      get: "/v1/auth"
 
     - selector: diabetesproto.UserService.GetUserByEmail
       get: "/v1/user/{Email}"
