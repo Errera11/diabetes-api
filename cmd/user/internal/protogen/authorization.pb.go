@@ -23,10 +23,10 @@ const (
 
 type SignupRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Image         *string                `protobuf:"bytes,4,opt,name=image,proto3,oneof" json:"image,omitempty"`
+	Username      string                 `protobuf:"bytes,1,opt,name=Username,proto3" json:"Username,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=Password,proto3" json:"Password,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=Email,proto3" json:"Email,omitempty"`
+	Image         *string                `protobuf:"bytes,4,opt,name=Image,proto3,oneof" json:"Image,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -335,7 +335,7 @@ func (x *LogoutResponse) GetMessage() string {
 
 type AuthRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	Token         *string                `protobuf:"bytes,1,opt,name=Token,proto3,oneof" json:"Token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -371,8 +371,8 @@ func (*AuthRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *AuthRequest) GetToken() string {
-	if x != nil {
-		return x.Token
+	if x != nil && x.Token != nil {
+		return *x.Token
 	}
 	return ""
 }
@@ -459,11 +459,11 @@ const file_authorization_proto_rawDesc = "" +
 	"\n" +
 	"\x13authorization.proto\x12\rdiabetesproto\"\x82\x01\n" +
 	"\rSignupRequest\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x19\n" +
-	"\x05image\x18\x04 \x01(\tH\x00R\x05image\x88\x01\x01B\b\n" +
-	"\x06_image\"A\n" +
+	"\bUsername\x18\x01 \x01(\tR\bUsername\x12\x1a\n" +
+	"\bPassword\x18\x02 \x01(\tR\bPassword\x12\x14\n" +
+	"\x05Email\x18\x03 \x01(\tR\x05Email\x12\x19\n" +
+	"\x05Image\x18\x04 \x01(\tH\x00R\x05Image\x88\x01\x01B\b\n" +
+	"\x06_Image\"A\n" +
 	"\rSigninRequest\x12\x14\n" +
 	"\x05Email\x18\x01 \x01(\tR\x05Email\x12\x1a\n" +
 	"\bPassword\x18\x02 \x01(\tR\bPassword\">\n" +
@@ -476,9 +476,10 @@ const file_authorization_proto_rawDesc = "" +
 	"\rLogoutRequest\x12\x14\n" +
 	"\x05Token\x18\x01 \x01(\tR\x05Token\"*\n" +
 	"\x0eLogoutResponse\x12\x18\n" +
-	"\aMessage\x18\x01 \x01(\tR\aMessage\"#\n" +
-	"\vAuthRequest\x12\x14\n" +
-	"\x05Token\x18\x01 \x01(\tR\x05Token\"\x84\x01\n" +
+	"\aMessage\x18\x01 \x01(\tR\aMessage\"2\n" +
+	"\vAuthRequest\x12\x19\n" +
+	"\x05Token\x18\x01 \x01(\tH\x00R\x05Token\x88\x01\x01B\b\n" +
+	"\x06_Token\"\x84\x01\n" +
 	"\fAuthResponse\x12\x0e\n" +
 	"\x02Id\x18\x01 \x01(\x05R\x02Id\x12\x1a\n" +
 	"\bUsername\x18\x02 \x01(\tR\bUsername\x12\x14\n" +
@@ -536,6 +537,7 @@ func file_authorization_proto_init() {
 		return
 	}
 	file_authorization_proto_msgTypes[0].OneofWrappers = []any{}
+	file_authorization_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

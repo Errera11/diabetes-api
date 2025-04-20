@@ -40,7 +40,7 @@ message LogoutResponse {
 }
 
 message AuthRequest {
-  string Token = 1;
+  optional string Token = 1;
 }
 
 message AuthResponse {
