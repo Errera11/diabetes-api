@@ -76,7 +76,7 @@ func ReqForAuthCheck(ctx context.Context, token string) (*protogen.AuthResponse,
 	authService := protogen.NewAuthServiceClient(grpcConn)
 
 	resp, err := authService.Auth(ctx, &protogen.AuthRequest{
-		Token: token,
+		Token: &token,
 	})
 
 	if err != nil {

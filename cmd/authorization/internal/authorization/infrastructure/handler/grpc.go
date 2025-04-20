@@ -76,7 +76,7 @@ func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authoriza
 
 func (a AuthorizationGrpcHandler) Auth(ctx context.Context, request *authorization.AuthRequest) (*authorization.AuthResponse, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
-	token := md["userId"]
+	token := md["userid"]
 
 	if !ok || len(token) == 0 {
 		return nil, fmt.Errorf("No token have been passed %e", ok)
