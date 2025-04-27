@@ -71,7 +71,7 @@ func (s *AuthorizationService) SignUp(ctx context.Context, payload *authorizatio
 	}, err
 }
 func (s *AuthorizationService) Logout(ctx context.Context, payload *authorizationProto.LogoutRequest) (*authorizationProto.LogoutResponse, error) {
-	_, err := s.authorizationRepo.DeleteSession(ctx, payload.Token)
+	_, err := s.authorizationRepo.DeleteSession(ctx, *payload.Token)
 
 	if err != nil {
 		return &authorizationProto.LogoutResponse{

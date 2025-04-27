@@ -1,7 +1,7 @@
 package handler
 
 type SavePredictionValidator struct {
-	CholLevel     int32   `validate:"required"`
+	CholLevel     float32 `validate:"required"`
 	DiffWalk      bool    `validate:"boolean"`
 	PhysHealth    int32   `validate:"required"`
 	Birthdate     string  `validate:"required"`

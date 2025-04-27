@@ -23,13 +23,15 @@ type ServiceAuthFuncOverride interface {
 var publicRoutes = []string{
 	"GetUserByEmail",
 	"GetUserById",
+	"SavePrediction",
 }
 
 func UnaryServerInterceptor(authFunc AuthFunc) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+		var isPublicRoute = false
 		for _, route := range publicRoutes {
-			if strings.Contains(info.FullMethod, route) {
-				return handler(ctx, req)
+			if strings.Contains(info.FullMethod, route) && !isPublicRoute {
+				isPublicRoute = true
 			}
 		}
 
@@ -40,10 +42,14 @@ func UnaryServerInterceptor(authFunc AuthFunc) grpc.UnaryServerInterceptor {
 		} else {
 			newCtx, err = authFunc(ctx)
 		}
-		if err != nil {
+		if err != nil && !isPublicRoute {
 			return nil, err
 		}
-		return handler(newCtx, req)
+
+		if newCtx != nil {
+			return handler(newCtx, req)
+		}
+		return handler(ctx, req)
 	}
 }
 

@@ -6,7 +6,7 @@ import (
 	"github.com/Errera1/prediction/internal/prediction/infrastructure/handler"
 	"github.com/Errera1/prediction/internal/prediction/middleware"
 	"github.com/Errera1/prediction/internal/prediction/service"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -15,11 +15,11 @@ import (
 
 type GRPCServer struct {
 	addr        string
-	storageConn *pgx.Conn
+	storageConn *pgxpool.Pool
 	apiAddr     string
 }
 
-func NewGRPCServer(addr string, storageConn *pgx.Conn, apiAddr string) *GRPCServer {
+func NewGRPCServer(addr string, storageConn *pgxpool.Pool, apiAddr string) *GRPCServer {
 	fmt.Println("Creating new gRPCServer")
 	return &GRPCServer{addr: addr, storageConn: storageConn, apiAddr: apiAddr}
 }

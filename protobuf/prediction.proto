@@ -12,7 +12,7 @@ service PredictionService {
 }
 
 message SavePredictionRequest {
-  int32 CholLevel     = 1;
+  float CholLevel     = 1;
   bool DiffWalk  = 2;
   int32 PhysHealth = 3;
   string Birthdate = 4;
@@ -27,7 +27,7 @@ message SavePredictionRequest {
 }
 
 message PredictionResponse {
-  int32 CholLevel     = 1;
+  float CholLevel     = 1;
   bool DiffWalk  = 2;
   int32 PhysHealth = 3;
   string Birthdate = 4;

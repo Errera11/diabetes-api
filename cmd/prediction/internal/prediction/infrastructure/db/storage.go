@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"github.com/Errera1/prediction/internal/prediction/domain"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type PredictionRepo struct {
-	conn *pgx.Conn
+	conn *pgxpool.Pool
 }
 
 func (p PredictionRepo) SavePrediction(ctx context.Context, data *domain.Prediction) (*domain.PredictionRecord, error) {
@@ -163,7 +164,7 @@ func (p PredictionRepo) DeletePredictionById(ctx context.Context, id int32) (*do
 	return &pred, nil
 }
 
-func New(conn *pgx.Conn) domain.PredictionRepo {
+func New(conn *pgxpool.Pool) domain.PredictionRepo {
 	return &PredictionRepo{
 		conn: conn,
 	}

@@ -23,7 +23,7 @@ const (
 
 type SavePredictionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CholLevel     int32                  `protobuf:"varint,1,opt,name=CholLevel,proto3" json:"CholLevel,omitempty"`
+	CholLevel     float32                `protobuf:"fixed32,1,opt,name=CholLevel,proto3" json:"CholLevel,omitempty"`
 	DiffWalk      bool                   `protobuf:"varint,2,opt,name=DiffWalk,proto3" json:"DiffWalk,omitempty"`
 	PhysHealth    int32                  `protobuf:"varint,3,opt,name=PhysHealth,proto3" json:"PhysHealth,omitempty"`
 	Birthdate     string                 `protobuf:"bytes,4,opt,name=Birthdate,proto3" json:"Birthdate,omitempty"`
@@ -69,7 +69,7 @@ func (*SavePredictionRequest) Descriptor() ([]byte, []int) {
 	return file_prediction_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SavePredictionRequest) GetCholLevel() int32 {
+func (x *SavePredictionRequest) GetCholLevel() float32 {
 	if x != nil {
 		return x.CholLevel
 	}
@@ -155,7 +155,7 @@ func (x *SavePredictionRequest) GetUserId() int32 {
 
 type PredictionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CholLevel     int32                  `protobuf:"varint,1,opt,name=CholLevel,proto3" json:"CholLevel,omitempty"`
+	CholLevel     float32                `protobuf:"fixed32,1,opt,name=CholLevel,proto3" json:"CholLevel,omitempty"`
 	DiffWalk      bool                   `protobuf:"varint,2,opt,name=DiffWalk,proto3" json:"DiffWalk,omitempty"`
 	PhysHealth    int32                  `protobuf:"varint,3,opt,name=PhysHealth,proto3" json:"PhysHealth,omitempty"`
 	Birthdate     string                 `protobuf:"bytes,4,opt,name=Birthdate,proto3" json:"Birthdate,omitempty"`
@@ -203,7 +203,7 @@ func (*PredictionResponse) Descriptor() ([]byte, []int) {
 	return file_prediction_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PredictionResponse) GetCholLevel() int32 {
+func (x *PredictionResponse) GetCholLevel() float32 {
 	if x != nil {
 		return x.CholLevel
 	}
@@ -571,7 +571,7 @@ const file_prediction_proto_rawDesc = "" +
 	"\n" +
 	"\x10prediction.proto\x12\rdiabetesproto\"\x8b\x03\n" +
 	"\x15SavePredictionRequest\x12\x1c\n" +
-	"\tCholLevel\x18\x01 \x01(\x05R\tCholLevel\x12\x1a\n" +
+	"\tCholLevel\x18\x01 \x01(\x02R\tCholLevel\x12\x1a\n" +
 	"\bDiffWalk\x18\x02 \x01(\bR\bDiffWalk\x12\x1e\n" +
 	"\n" +
 	"PhysHealth\x18\x03 \x01(\x05R\n" +
@@ -588,7 +588,7 @@ const file_prediction_proto_rawDesc = "" +
 	"\x06UserId\x18\f \x01(\x05H\x00R\x06UserId\x88\x01\x01B\t\n" +
 	"\a_UserId\"\xa6\x03\n" +
 	"\x12PredictionResponse\x12\x1c\n" +
-	"\tCholLevel\x18\x01 \x01(\x05R\tCholLevel\x12\x1a\n" +
+	"\tCholLevel\x18\x01 \x01(\x02R\tCholLevel\x12\x1a\n" +
 	"\bDiffWalk\x18\x02 \x01(\bR\bDiffWalk\x12\x1e\n" +
 	"\n" +
 	"PhysHealth\x18\x03 \x01(\x05R\n" +

@@ -61,25 +61,30 @@ func (a AuthorizationGrpcHandler) Signup(ctx context.Context, request *authoriza
 }
 
 func (a AuthorizationGrpcHandler) Logout(ctx context.Context, request *authorization.LogoutRequest) (*authorization.LogoutResponse, error) {
-	parsedReq := &LogoutValidator{
-		Token: request.Token,
-	}
-	err := a.validator.Struct(parsedReq)
-	if err != nil {
-		return nil, err
+	md, ok := metadata.FromIncomingContext(ctx)
+	token := md["userid"]
+
+	if !ok || len(token) == 0 {
+		return nil, fmt.Errorf("No token have been passed %e", ok)
 	}
 
 	utils.SetDeleteSessionFlagInCtx(ctx)
 
-	return a.authorizationService.Logout(ctx, request)
+	return a.authorizationService.Logout(ctx, &authorization.LogoutRequest{
+		Token: &token[0],
+	})
 }
 
 func (a AuthorizationGrpcHandler) Auth(ctx context.Context, request *authorization.AuthRequest) (*authorization.AuthResponse, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	token := md["userid"]
 
-	if !ok || len(token) == 0 {
+	if !ok || (len(token) == 0 && request.Token == nil) {
 		return nil, fmt.Errorf("No token have been passed %e", ok)
+	}
+
+	if request.Token != nil {
+		return a.authorizationService.CheckAuth(ctx, request)
 	}
 
 	return a.authorizationService.CheckAuth(ctx, &authorization.AuthRequest{

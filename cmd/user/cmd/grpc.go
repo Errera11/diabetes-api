@@ -6,20 +6,19 @@ import (
 	"github.com/Errera11/user/internal/user/infrastructure"
 	"github.com/Errera11/user/internal/user/infrastructure/handler"
 	"github.com/Errera11/user/internal/user/service"
-	"github.com/jackc/pgx/v5"
-	"log"
-	"net"
-
+	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"log"
+	"net"
 )
 
 type GRPCServer struct {
 	addr   string
-	dbConn *pgx.Conn
+	dbConn *pgxpool.Pool
 }
 
-func NewGRPCServer(addr string, dbConn *pgx.Conn) *GRPCServer {
+func NewGRPCServer(addr string, dbConn *pgxpool.Pool) *GRPCServer {
 	fmt.Println("Creating new gRPCServer")
 	return &GRPCServer{addr: addr, dbConn: dbConn}
 }

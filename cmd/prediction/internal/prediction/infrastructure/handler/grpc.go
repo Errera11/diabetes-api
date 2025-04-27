@@ -32,7 +32,13 @@ func (p PredictionGrpcHandler) SavePrediction(ctx context.Context, request *diab
 		return nil, err
 	}
 
-	user := ctx.Value("user").(*diabetesproto.AuthResponse)
+	user := ctx.Value("user")
+
+	var UserId int32
+	if user != nil {
+		userInterface := user.(*diabetesproto.AuthResponse)
+		UserId = userInterface.Id
+	}
 
 	return p.predictionService.SavePrediction(ctx, &diabetesproto.SavePredictionRequest{
 		CholLevel:     request.CholLevel,
@@ -45,7 +51,7 @@ func (p PredictionGrpcHandler) SavePrediction(ctx context.Context, request *diab
 		HeartDisease:  request.HeartDisease,
 		GenHealth:     request.GenHealth,
 		PhysActivity:  request.PhysActivity,
-		UserId:        &user.Id,
+		UserId:        &UserId,
 	})
 }
 

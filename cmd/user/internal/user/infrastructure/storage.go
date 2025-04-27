@@ -6,13 +6,14 @@ import (
 	userProto "github.com/Errera11/user/internal/protogen"
 	"github.com/Errera11/user/internal/user/repository"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type UserRepo struct {
-	conn *pgx.Conn
+	conn *pgxpool.Pool
 }
 
-func NewUserRepo(conn *pgx.Conn) (repository.UserRepo, error) {
+func NewUserRepo(conn *pgxpool.Pool) (repository.UserRepo, error) {
 	err := createUsersTable(conn)
 	if err != nil {
 		return nil, fmt.Errorf("Faild to create users table: %w", err)
@@ -119,7 +120,7 @@ func (r *UserRepo) GetAllUsers(ctx context.Context) (*userProto.GetAllUsersRespo
 	return &userProto.GetAllUsersResponse{Users: users}, nil
 }
 
-func createUsersTable(conn *pgx.Conn) error {
+func createUsersTable(conn *pgxpool.Pool) error {
 	createTableQuery := `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,

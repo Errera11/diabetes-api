@@ -21,7 +21,7 @@ func (p PredictionService) SavePrediction(ctx context.Context, request *diabetes
 		return nil, fmt.Errorf("Error MakePrediction: %w", err)
 	}
 
-	if request.UserId == nil {
+	if *request.UserId == -1 || request.UserId == nil {
 		return &diabetesproto.PredictionResponse{
 			CholLevel:     request.CholLevel,
 			DiffWalk:      request.DiffWalk,

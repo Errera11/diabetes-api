@@ -32,7 +32,7 @@ message SignupResponse {
 }
 
 message LogoutRequest {
-  string Token = 1;
+  optional string Token = 1;
 }
 
 message LogoutResponse {

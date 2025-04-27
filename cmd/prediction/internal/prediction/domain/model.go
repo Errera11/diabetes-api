@@ -1,7 +1,7 @@
 package domain
 
 type Prediction struct {
-	CholLevel     int32     `json:"cholLevel"`
+	CholLevel     float32   `json:"cholLevel"`
 	DiffWalk      bool      `json:"diffWalk"`
 	PhysHealth    int32     `json:"physHealth"`
 	Birthdate     string    `json:"birthdate"`
