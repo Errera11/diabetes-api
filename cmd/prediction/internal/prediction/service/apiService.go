@@ -15,14 +15,14 @@ type PredictionResponse struct {
 }
 
 type ApiService struct {
-	ApiAddr string
+	ApiAddr *string
 }
 
 type PredictionRequest struct {
 	Data *domain.Prediction `json:"data"`
 }
 
-func NewApiService(addr string) *ApiService {
+func NewApiService(addr *string) *ApiService {
 	return &ApiService{ApiAddr: addr}
 }
 
@@ -36,8 +36,9 @@ func (a *ApiService) MakePrediction(ctx context.Context, payload *domain.Predict
 		return nil, fmt.Errorf("failed to serialize payload: %w", err)
 	}
 
-	resp, err := http.Post(a.ApiAddr+"%/predict/", "application/json", bytes.NewBuffer(serializedPayload))
-	fmt.Println("Make req for prediction to:", a.ApiAddr+"%/predict/")
+	fmt.Println("a.ApiAddr", a.ApiAddr)
+	fmt.Println("Make req for prediction to:", *a.ApiAddr+"/predict/")
+	resp, err := http.Post(*a.ApiAddr+"/predict/", "application/json", bytes.NewBuffer(serializedPayload))
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed make req for prediction: %v", err)
 	}

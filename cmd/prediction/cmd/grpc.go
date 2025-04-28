@@ -16,10 +16,10 @@ import (
 type GRPCServer struct {
 	addr        string
 	storageConn *pgxpool.Pool
-	apiAddr     string
+	apiAddr     *string
 }
 
-func NewGRPCServer(addr string, storageConn *pgxpool.Pool, apiAddr string) *GRPCServer {
+func NewGRPCServer(addr string, storageConn *pgxpool.Pool, apiAddr *string) *GRPCServer {
 	fmt.Println("Creating new gRPCServer")
 	return &GRPCServer{addr: addr, storageConn: storageConn, apiAddr: apiAddr}
 }

@@ -20,7 +20,8 @@ func main() {
 		fmt.Errorf("Error connecting to database: %v", err)
 	}
 
-	server := NewGRPCServer(os.Getenv("SERVICE_URL"), conn, os.Getenv("PREDICTION_API_ADDR"))
+	serviceUrl := os.Getenv("PREDICTION_API_ADDR")
+	server := NewGRPCServer(os.Getenv("SERVICE_URL"), conn, &serviceUrl)
 
 	server.Run()
 }
