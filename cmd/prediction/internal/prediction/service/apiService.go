@@ -36,8 +36,8 @@ func (a *ApiService) MakePrediction(ctx context.Context, payload *domain.Predict
 		return nil, fmt.Errorf("failed to serialize payload: %w", err)
 	}
 
-	fmt.Println("a.ApiAddr", a.ApiAddr)
-	fmt.Println("Make req for prediction to:", *a.ApiAddr+"/predict/")
+	fmt.Println("a.ApiAddr", *a.ApiAddr)
+	fmt.Printf("Make req for prediction to: %d", *a.ApiAddr+"/predict/")
 	resp, err := http.Post(*a.ApiAddr+"/predict/", "application/json", bytes.NewBuffer(serializedPayload))
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed make req for prediction: %v", err)
