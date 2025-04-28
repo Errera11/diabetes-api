@@ -19,9 +19,10 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     libpq-dev \
     make \
+    migrate \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/server /usr/local/bin/server
+COPY --from=builder /app/Makefile /Makefile
 
-CMD ["make migrate-db"]
-CMD ["server"]
+CMD ["sh", "-c", "make migrate-db && /usr/local/bin/server"]
