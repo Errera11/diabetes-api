@@ -24,5 +24,6 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=builder /app/server /usr/local/bin/server
 COPY --from=builder /app/Makefile /Makefile
+COPY --from=builder /internal/prediction/infrastructure/db/migrations /migrations/
 
 CMD ["sh", "-c", "make migrate-db && /usr/local/bin/server"]
