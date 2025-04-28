@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     make \
-    curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$os-$arch.tar.gz | tar xvz \
+    curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz | tar xvz \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/server /usr/local/bin/server
