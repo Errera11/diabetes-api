@@ -23,19 +23,6 @@ services:
       start_period: 10s
       timeout: 5s
 
-  migrate:
-    image: migrate/migrate
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-    networks:
-      - microservices_network
-    volumes:
-      - ./internal/prediction/infrastructure/db/migrations/:/migrations/
-    command: [ "-path", "/migrations", "-database",  "${DATABASE_URL}" ]
-    depends_on:
-      diabetes-prediction-mc-db:
-        condition: service_healthy
-
   diabetes-mc-prediction:
     build:
       context: .
@@ -52,6 +39,8 @@ services:
       - microservices_network
     depends_on:
       - migrate
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   microservices_network:
