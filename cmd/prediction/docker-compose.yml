@@ -23,6 +23,7 @@ services:
       start_period: 10s
       timeout: 5s
 
+
   diabetes-mc-prediction:
     build:
       context: .
@@ -38,7 +39,8 @@ services:
     networks:
       - microservices_network
     depends_on:
-      - migrate
+      diabetes-prediction-mc-db:
+        condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
