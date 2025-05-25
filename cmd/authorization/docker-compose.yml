@@ -8,6 +8,8 @@ services:
       - microservices_network
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
+    expose:
+      - 6379
 
   diabetes-mc-authorization:
     build:
